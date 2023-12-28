@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>To Do</title>
+</head>
+<body>
+    <div class="wrapper">
+        <h1 class="header">todos</h1>
+        <div class="main-content">
+            <div class="wrap">
+                <input placeholder="What needs to be done?" type="text" class="input">
+                <button class="button-main btn">
+                    <svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+                  </svg>
+                </button>
+            </div>
+            <ul class="list">
+            
+            </ul>
+            <div class="footer">
+                <span class="span">0 items left</span>
+                <button class="footer-button footer-button-all btn" id="all-btn-id">All</button>
+                <button class="footer-button footer-button-active btn" id="active-btn-id">Active</button>
+                <button class="footer-button footer-button-completed btn" id="completed-btn-id">Completed</button>
+                <button class="footer-button footer-button-clear btn hidden">Clear completed</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
