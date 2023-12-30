@@ -54,7 +54,7 @@ const dom = {
         liElement.appendChild(clearButton);
 
         clearButton.addEventListener("click", function(event){
-            let filteredTodos = todos.filter((todo) => todo.id !== +liElement.id);
+            let filteredTodos = state.todos.filter((todo) => todo.id !== +liElement.id);
             //get rid element from array 
             todos = filteredTodos;
             liElement.remove();
@@ -63,11 +63,11 @@ const dom = {
         })
 
         checkboxElement.addEventListener('input', function(event){
-            for (let i = 0; i < todos.length; i++ ) {
-                    if (liElement.id == todos[i].id) {
-                        todos[i].completed = !todos[i].completed;
+            for (let i = 0; i < state.todos.length; i++ ) {
+                    if (liElement.id == state.todos[i].id) {
+                        state.todos[i].completed = !state.todos[i].completed;
 
-                        if(todos[i].completed === true){
+                        if(state.todos[i].completed === true){
                             liElement.classList.add("cross-out");
                         } else {
                             liElement.classList.remove("cross-out");
@@ -77,7 +77,7 @@ const dom = {
             }
             updateCounter();
             clearCompleted();
-            storage.saveData("saveTodos", todos);
+            storage.saveData("saveTodos", state.todos);
         })
 
         return liElement;
