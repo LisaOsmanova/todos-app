@@ -54,9 +54,7 @@ const dom = {
         liElement.appendChild(clearButton);
 
         clearButton.addEventListener("click", function(event){
-            let filteredTodos = state.todos.filter((todo) => todo.id !== +liElement.id);
-            //get rid element from array 
-            state.todos = filteredTodos;
+            state.removeTodo(+liElement.id);
             liElement.remove();
             updateCounter();
             storage.saveData("saveTodos",state.todos);
@@ -165,60 +163,12 @@ const state = {
     },
     updateTodo(i,is){
         this.todos[i].completed = is;
+    },
+    removeTodo(id){
+        let filteredTodos = this.todos.filter((todo) => todo.id !== id);
+        state.todos = filteredTodos;
     }
 }
-
-    // Init application
-if (storage.getData('saveTodos') !== null) {
-    state.todos = storage.getData("saveTodos");
-}
-dom.renderElements(state.todos);
-dom.highlightFilter(storage.getData("btnId") || "all-btn-id");
-
-
-if (storage.getData('btnId') === "completed-btn-id"){
-    filterAndToggleElements(todo => todo.completed === true);
-} else if (storage.getData('btnId') === "active-btn-id") {
-    filterAndToggleElements(todo => todo.completed === false);
-} 
-
-mainButton.addEventListener("click", function(event){
-
-    const checkboxes = document.querySelectorAll('.check')
-    const liItems = document.querySelectorAll('.li-style')
-    if(state.todos.some((todo) => todo.completed === false)) {
-        for (let i = 0; i < state.todos.length; i++) {
-            state.updateTodo(i,true);
-            checkboxes[i].checked = true;
-        }
-        liItems.forEach((item) => item.classList.add("cross-out"))
-    } else if (state.todos.every((todo) => todo.completed === true)) {
-        for (let i = 0; i < state.todos.length; i++) {
-            state.updateTodo(i, false);
-            checkboxes[i].checked = false;
-        }
-        liItems.forEach((item)=> item.classList.remove("cross-out"))
-    }
-    updateCounter();
-})
-
-inputElement.addEventListener("keydown", function(event){
-    if (event.key === 'Enter') {
-        const {id, completed} = state.addTodo(inputElement.value);
-        const li = dom.createTodo(id, completed, inputElement.value);
-        ul.appendChild(li);
-
-        inputElement.value = "";
-        updateCounter();
-        storage.saveData("saveTodos",state.todos);
-    }
-})
-
-btnClearCmpl.addEventListener('click', function(event){
-    state.clearCompleted((id) => dom.removeTodo(id));
-    clearCompleted();
-    storage.saveData("saveTodos", state.todos);
-})
 
 function updateCounter() {
     const activeTodos = state.getActiveTodos();
@@ -237,37 +187,79 @@ function filterAndToggleElements(filterCondition) {
     dom.toggleByLiId(ids);
 }
 
-btnAll.addEventListener("click", function(event) {
-    let btnAllId = btnAll.getAttribute('id');
-    storage.saveData("btnId", btnAllId);
-    dom.removeClasses('hidden');
-    dom.setActiveFilter(btnAll);
-})
 
-btnActive.addEventListener("click", function(event) {
-    let btnActiveId = btnActive.getAttribute("id");
-    filterAndToggleElements(todo => todo.completed === false);
-    storage.saveData("btnId", btnActiveId);
-    dom.setActiveFilter(btnActive);
-});
+function init(){
+    if (storage.getData('saveTodos') !== null) {
+        state.todos = storage.getData("saveTodos");
+    }
+    dom.renderElements(state.todos);
+    dom.highlightFilter(storage.getData("btnId") || "all-btn-id");
+    
+    
+    if (storage.getData('btnId') === "completed-btn-id"){
+        filterAndToggleElements(todo => todo.completed === true);
+    } else if (storage.getData('btnId') === "active-btn-id") {
+        filterAndToggleElements(todo => todo.completed === false);
+    } 
+    
+    mainButton.addEventListener("click", function(event){
+    
+        const checkboxes = document.querySelectorAll('.check')
+        const liItems = document.querySelectorAll('.li-style')
+        if(state.todos.some((todo) => todo.completed === false)) {
+            for (let i = 0; i < state.todos.length; i++) {
+                state.updateTodo(i,true);
+                checkboxes[i].checked = true;
+            }
+            liItems.forEach((item) => item.classList.add("cross-out"))
+        } else if (state.todos.every((todo) => todo.completed === true)) {
+            for (let i = 0; i < state.todos.length; i++) {
+                state.updateTodo(i, false);
+                checkboxes[i].checked = false;
+            }
+            liItems.forEach((item)=> item.classList.remove("cross-out"))
+        }
+        updateCounter();
+    })
+    
+    inputElement.addEventListener("keydown", function(event){
+        if (event.key === 'Enter') {
+            const {id, completed} = state.addTodo(inputElement.value);
+            const li = dom.createTodo(id, completed, inputElement.value);
+            ul.appendChild(li);
+    
+            inputElement.value = "";
+            updateCounter();
+            storage.saveData("saveTodos",state.todos);
+        }
+    })
+    
+    btnClearCmpl.addEventListener('click', function(event){
+        state.clearCompleted((id) => dom.removeTodo(id));
+        clearCompleted();
+        storage.saveData("saveTodos", state.todos);
+    })
+    
+    btnAll.addEventListener("click", function(event) {
+        let btnAllId = btnAll.getAttribute('id');
+        storage.saveData("btnId", btnAllId);
+        dom.removeClasses('hidden');
+        dom.setActiveFilter(btnAll);
+    })
+    
+    btnActive.addEventListener("click", function(event) {
+        let btnActiveId = btnActive.getAttribute("id");
+        filterAndToggleElements(todo => todo.completed === false);
+        storage.saveData("btnId", btnActiveId);
+        dom.setActiveFilter(btnActive);
+    });
+    
+    btnCompleted.addEventListener("click", function(event) {
+        filterAndToggleElements(todo => todo.completed === true);
+        let btnCompletedId = btnCompleted.getAttribute("id");
+        dom.setActiveFilter(btnCompleted);
+        storage.saveData("btnId", btnCompletedId);
+    });
+}
 
-btnCompleted.addEventListener("click", function(event) {
-    filterAndToggleElements(todo => todo.completed === true);
-    let btnCompletedId = btnCompleted.getAttribute("id");
-    dom.setActiveFilter(btnCompleted);
-    storage.saveData("btnId", btnCompletedId);
-});
-
-// let ladder = {
-//     step: 0,
-//     up() {
-//       this.step++;
-//     },
-//     down() {
-//       this.step--;
-//     },
-//     showStep: function() { // shows the current step
-//       alert( this.step );
-//     }
-//   };
-
+document.addEventListener('DOMContentLoaded', init);
