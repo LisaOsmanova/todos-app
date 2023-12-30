@@ -56,10 +56,10 @@ const dom = {
         clearButton.addEventListener("click", function(event){
             let filteredTodos = state.todos.filter((todo) => todo.id !== +liElement.id);
             //get rid element from array 
-            todos = filteredTodos;
+            state.todos = filteredTodos;
             liElement.remove();
             updateCounter();
-            storage.saveData("saveTodos",todos);
+            storage.saveData("saveTodos",state.todos);
         })
 
         checkboxElement.addEventListener('input', function(event){
