@@ -116,7 +116,7 @@ const dom = {
         count.textContent = span;
     },
     toggleByLiId(ids){
-        let liElements = document.querySelectorAll('li');
+        let liElements = document.querySelectorAll('.li-style');
         for (let i = 0; i < liElements.length; i++){
         dom.toggleElement(liElements[i], 'hidden', ids.includes(+liElements[i].id));
     }

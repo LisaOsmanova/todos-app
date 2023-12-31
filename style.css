@@ -1,11 +1,11 @@
 *{
     margin: 0;
     padding: 0;
-    font-family: "Poppins";
     box-sizing: border-box;
 }
 
 body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: #f5f5f5;
     display: flex;
     width: 100%;
@@ -59,13 +59,15 @@ ul {
 }
 
 .li-style {
-    padding: 10px;
+    padding: 10px 20px 10px 20px;
     border-bottom: 1px solid;
     border-color: rgba(141, 37, 37, 0.15);
     background-color: #f5f5f5;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    display: flex;
+    gap: 20px;
 }
 
 .li-style:hover .button-style{
@@ -80,6 +82,7 @@ ul {
     cursor: pointer;
     position: relative;
     border-radius: 5px;
+    flex-shrink: 0;
 }
 
 .button-style:after {
@@ -168,7 +171,20 @@ ul {
     position: absolute;
     left: 8px;
     font-size: 14px;
+    display: none;
 }
 .btn-click {
     border:2px solid rgba(101, 26, 26, 0.442)
+}
+.footer-button-clear {
+    text-wrap: nowrap;
+}
+.button-ul {
+    display: flex;
+}
+
+@media screen and (min-width: 600px) {
+    .span {
+        display: block;
+    }
 }
